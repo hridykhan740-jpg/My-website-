@@ -1,0 +1,10 @@
+{
+  "name": "Àbdüllāh Aĺ Hỗŝŝâîň Portfolio",
+  "description": "Premium personal brand platform with secure admin system, visitor analytics, and cinematic UI.",
+  "requestFramePermissions": [
+    "geolocation"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

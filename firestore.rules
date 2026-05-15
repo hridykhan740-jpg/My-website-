@@ -1,0 +1,64 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper Functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    
+    function isAdmin() {
+      return isSignedIn() && request.auth.token.email == 'hridykhan740@gmail.com';
+    }
+    
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidString(val, maxLen) {
+      return val is string && val.size() <= maxLen;
+    }
+
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Profiles
+    match /profiles/{profileId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Projects, Blogs, Skills, Achievements
+    match /projects/{id} { allow read: if true; allow write: if isAdmin(); }
+    match /blogs/{id} { allow read: if true; allow write: if isAdmin(); }
+    match /skills/{id} { allow read: if true; allow write: if isAdmin(); }
+    match /achievements/{id} { allow read: if true; allow write: if isAdmin(); }
+
+    // Visitors - Admin only reads details, Auth'd users can create/update their own
+    match /visitors/{userId} {
+      allow read: if isAdmin() || isOwner(userId);
+      allow write: if isOwner(userId) || isAdmin();
+    }
+
+    // Statistics
+    match /stats/{docId} {
+      allow read: if true;
+      allow write: if isAdmin() || (docId == 'totals' && isSignedIn());
+    }
+
+    // Comments
+    match /comments/{commentId} {
+      allow read: if true;
+      allow create: if isSignedIn();
+      allow update, delete: if isAdmin() || isOwner(request.resource.data.userId);
+    }
+
+    // Messages
+    match /messages/{messageId} {
+      allow read: if isAdmin();
+      allow create: if true; // Anyone can send a message
+      allow update, delete: if isAdmin();
+    }
+  }
+}

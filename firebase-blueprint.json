@@ -1,0 +1,77 @@
+{
+  "entities": {
+    "Profile": {
+      "title": "Public Profile",
+      "description": "Information about Abdullah Al Hossain",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "title": { "type": "string" },
+        "bio": { "type": "string" },
+        "detailedBio": { "type": "string" },
+        "heroImage": { "type": "string" },
+        "aboutImage": { "type": "string" },
+        "contactEmail": { "type": "string" },
+        "socials": { "type": "object" }
+      },
+      "required": ["name", "title"]
+    },
+    "Visitor": {
+      "title": "Visitor Log",
+      "description": "Visitor information and analytics",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string" },
+        "name": { "type": "string" },
+        "photo": { "type": "string" },
+        "lastVisit": { "type": "number" },
+        "device": { "type": "string" },
+        "visitCount": { "type": "number" }
+      },
+      "required": ["email", "name"]
+    },
+    "Comment": {
+      "title": "Visitor Comment",
+      "description": "Comments left by visitors",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "userName": { "type": "string" },
+        "userPhoto": { "type": "string" },
+        "content": { "type": "string" },
+        "createdAt": { "type": "number" }
+      },
+      "required": ["userId", "content", "createdAt"]
+    }
+  },
+  "firestore": {
+    "profiles/main": {
+      "schema": "Profile",
+      "description": "The main profile data"
+    },
+    "visitors/{visitorId}": {
+      "schema": "Visitor",
+      "description": "Analytics for each visitor"
+    },
+    "comments/{commentId}": {
+      "schema": "Comment",
+      "description": "Visitor feedback and comments"
+    },
+    "messages/{messageId}": {
+      "schema": "object",
+      "description": "Direct messages to admin"
+    },
+    "projects/{projectId}": {
+      "schema": "object",
+      "description": "Portfolio items"
+    },
+    "blogs/{blogId}": {
+      "schema": "object",
+      "description": "Blog posts"
+    },
+    "stats/totals": {
+      "schema": "object",
+      "description": "Global stats like visitor counter"
+    }
+  }
+}
